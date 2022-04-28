@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Chart as ChartJS,
+  ArcElement,
   CategoryScale,
   LinearScale,
   BarElement,
@@ -10,9 +11,10 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Bar, Line } from "react-chartjs-2";
+import { Bar, Doughnut, Line } from "react-chartjs-2";
 
 ChartJS.register(
+  ArcElement,
   CategoryScale,
   LinearScale,
   BarElement,
@@ -47,9 +49,14 @@ export function BarChart({ value, type }) {
       },
     ],
   };
-  return type == "line" ? (
-    <Line options={options} data={data} />
-  ) : (
-    <Bar options={options} data={data} />
-  );
+  switch (type) {
+    case "line":
+      return <Line options={options} data={data} />;
+    case "bar":
+      return <Bar options={options} data={data} />;
+    case "doughnut":
+      return <Doughnut options={options} data={data} />;
+    default:
+      return <Bar options={options} data={data} />;
+  }
 }
