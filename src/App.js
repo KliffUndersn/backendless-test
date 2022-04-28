@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { BarChart } from "./shared/chart";
-import { useForm } from "./shared/components/hooks";
 
 const initialState = {
   title: "От чего зависит трудоустройство",
@@ -11,7 +10,7 @@ const initialState = {
   zAxisValues: "8,6,8,4,5,6,8,9,7,6,5,7",
 };
 const containerStyle = {
-  maxWidth: "70vw",
+  maxWidth: "50vw",
   margin: "0 auto",
   justifyContent: "center",
   color: "black",
@@ -25,17 +24,28 @@ const containerStyle = {
 const buttonList = ["bar", "line", "doughnut"];
 
 function App() {
-  const [data, handleChange, handleSubmit] = useForm(initialState, onSubmit);
+  const [data, setData] = useState(initialState);
   const [labels, setLabels] = useState(data.xAxisLabels);
   const [chartType, setChartType] = useState(buttonList[0]);
+
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
+    setData((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setData((prevState) => ({ ...prevState, xAxisLabels: labels }));
+  };
 
   const labelChangeHandler = ({ target }) => {
     setLabels(target.value);
   };
+
   const radioHandler = ({ target }) => {
     if (target.value !== chartType) setChartType(target.value);
   };
-  function onSubmit() {}
+
   return (
     <>
       <form onSubmit={handleSubmit} className="App" style={containerStyle}>
